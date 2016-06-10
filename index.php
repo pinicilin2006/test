@@ -2,7 +2,7 @@
 require_once('config.php');
 require_once('function.php');
 connect_to_base();
-$num = 10;//количество отображаемых записей на странице
+$num = 25;//количество отображаемых записей на странице
 $offset = 0;//смещение
 if(isset($_GET['num_page']) && filter_var($_GET['num_page'], FILTER_VALIDATE_INT))
 {	
