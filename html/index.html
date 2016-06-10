@@ -10,10 +10,10 @@
     <title>Гостевая книга</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
     <!-- Custom styles for this template -->
-    <link href="/css/jumbotron-narrow.css" rel="stylesheet">
-<link rel="stylesheet" href="/tablesorter/style.css" type="text/css" id="" media="print, projection, screen" />
+    <link href="css/jumbotron-narrow.css" rel="stylesheet">
+<link rel="stylesheet" href="tablesorter/style.css" type="text/css" id="" media="print, projection, screen" />
     <!-- Just for debugging purposes. Don't actually copy this line! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 
@@ -133,7 +133,7 @@
 				</div>								
 
 				<div class="form-group">
-				    <label for="captcha" class="col-sm-4 control-label"><div id="captcha_image"><img src="/captcha.php?anti_cache='<?php echo microtime()?>'"></div></label>
+				    <label for="captcha" class="col-sm-4 control-label"><div id="captcha_image"><img src="captcha.php?anti_cache='<?php echo microtime()?>'"></div></label>
 				    <div class="col-sm-7">
 				      	<input type="text" class="form-control" name="captcha" id="captcha" placeholder="Введите код с картинки" required="required">
 				    </div>
@@ -157,9 +157,9 @@
     </div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
-    <script type="text/javascript" src="/js/jquery.js"></script>
-    <script type="text/javascript" src="/js/tablesorter.js"></script>
-    <script type="text/javascript" src="/js/bootstrap.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/tablesorter.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
     <!-- Placed at the end of the document so the pages load faster -->
 	<script type="text/javascript">
 	$(document).ready(function(){
@@ -172,7 +172,7 @@
 			var a = $("#main_form").serialize();
 			$.ajax({
 			  type: "POST",
-			  url: '/ajax/message_add.php',
+			  url: 'ajax/message_add.php',
 			  data: a,
 			  success: function(data) {
 			  	if(data=='success'){
