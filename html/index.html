@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Гостевая книга</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/css/jumbotron-narrow.css" rel="stylesheet">
+<link rel="stylesheet" href="/tablesorter/style.css" type="text/css" id="" media="print, projection, screen" />
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="container-fluid">
+      <div class="header">
+        <ul class="pull-right list-inline">
+          <li>
+          	<a href="#add_message_modal" role="button" id="add_button" class="btn btn-success" data-toggle="modal">Добавить запись</a>
+          </li>
+        </ul>
+        <h3 class="text-muted"><a style="text-decoration: none;" href="/">Гостевая книга</a></h3>
+      </div>
+      <div>
+		
+		<?php
+			if($offset == 0){
+		?>
+<!-- 			<div class="radio">
+			  <label>
+			          <input type="radio" name="order_date" id="date_up" value="up" checked>
+			          Сначала свежие записи
+			        </label>
+			</div>
+			<div class="radio">
+			  <label>
+			          <input type="radio" name="order_date" id="date_down" value="down">
+			          Сначала старые записи
+			        </label>
+			</div> -->
+		<?php } ?>
+
+      </div>
+      <div class="table-responsive">
+		<table class="table table-hover table-condensed table-bordered tablesorter" id="message_table">
+                <thead>
+                	<tr>
+	                  <th>ID</th>
+	                  <th>Дата</th>
+	                  <th>Имя</th>
+	                  <th>Email</th>
+	                  <th>Текст сообщения</th>                 
+                  	</tr>
+                </thead>
+                <tbody>
+                <?php
+                while($row = mysql_fetch_assoc($data))
+                {
+                	echo '<tr>';
+                	echo '<td>'.$row['id'].'</td>';
+                	echo '<td>'.date('d.m.y H:i', $row['date_create']).'</td>';
+                	echo '<td>'.$row['user_name'].'</td>';
+                	echo '<td>'.$row['email'].'</td>';
+                	echo '<td>'.$row['text'].'</td>';
+                	echo '</tr>';
+                }
+                ?>
+                </tbody>
+        </table>
+		<ul class="pagination">
+		<?php
+		for($x=1;$x<=$num_pages;$x++)
+		{
+			echo '<li '.(($active_link  && $x == $active_link) || (!$active_link && $x == 1) ? 'class="active" ' : '').'><a href="index.php?num_page='.$x.'">'.$x.'</a></li>';
+		}
+		?>
+		</ul>        
+    </div>
+
+    </div> <!-- /container -->
+
+	<div id="add_message_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h3 id="myModalLabel">Добавить запись в гостевую книгу</h3>
+      </div>
+      <div class="modal-body">
+
+			<form class="form-horizontal" role="form" id="main_form">
+
+				<div class="form-group">
+				    <label for="user_name" class="col-sm-4 control-label">Имя пользователя:</label>
+				    <div class="col-sm-7">
+				      	<input type="text" class="form-control" name="user_name" id="user_name" placeholder="Имя пользователя" required="required">
+				    </div>
+				</div>
+
+				<div class="form-group">
+				    <label for="email" class="col-sm-4 control-label">Email:</label>
+				    <div class="col-sm-7">
+				      	<input type="email" class="form-control" name="email" id="email" placeholder="Email" required="required">
+				    </div>
+				</div>
+
+				<div class="form-group">
+				    <label for="homepage" class="col-sm-4 control-label">Домашняя страница:</label>
+				    <div class="col-sm-7">
+				      	<input type="text" class="form-control" name="homepage" id="homepage" placeholder="http://www.vk.com">
+				    </div>
+				</div>
+
+				<div class="form-group">
+				    <label for="text" class="col-sm-4 control-label">Текст сообщения:</label>
+				    <div class="col-sm-7">
+				      	<textarea class="form-control" rows="5" style="resize:none" name="text" id="text" placeholder="Сообщение" required="required"></textarea>
+				    </div>
+				</div>								
+
+				<div class="form-group">
+				    <label for="captcha" class="col-sm-4 control-label"><div id="captcha_image"><img src="/captcha.php?anti_cache='<?php echo microtime()?>'"></div></label>
+				    <div class="col-sm-7">
+				      	<input type="text" class="form-control" name="captcha" id="captcha" placeholder="Введите код с картинки" required="required">
+				    </div>
+				</div>
+
+			  <hr>
+				<div class="form-group">
+				<div class="col-sm-11">
+			    	<div class="pull-right">
+			      		<button class="btn btn-info" disabled="disabled">Предварительный просмотр</button>
+			      		<button type="submit" class="btn btn-success">Добавить запись</button>
+			    	</div>
+			    	</div>
+			  	</div>
+			</form>
+
+      </div>
+      <div class="modal-footer">
+      		<div id="result_message" style="display:none"></div>
+      </div>
+    </div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script type="text/javascript" src="/js/tablesorter.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.js"></script>
+    <!-- Placed at the end of the document so the pages load faster -->
+	<script type="text/javascript">
+	$(document).ready(function(){
+	//Сортировка в таблице
+ 		$("#message_table").tablesorter({
+ 			headers: {0: { sorter: false}}
+ 		});
+	//обработка формы добавления записи
+	    $('#main_form').submit(function( event ) {
+			var a = $("#main_form").serialize();
+			$.ajax({
+			  type: "POST",
+			  url: '/ajax/message_add.php',
+			  data: a,
+			  success: function(data) {
+			  	if(data=='success'){
+			  		$('#add_message_modal').modal('hide');
+			  		setTimeout('window.location.reload()', 200)
+			  		//$('#main_form')[0].reset();
+			  		//$('#captcha_image').html("<img src='/captcha.php?anti_cache="+Math.random()+"'>");
+			  	} else {
+				  	$("#result_message").slideUp(50);
+				  	$("#result_message").html(data);
+				  	$("#result_message").slideDown(100);
+			  	}
+			  }
+			});
+	    	return false;
+	    });
+	});
+
+	</script>    
+  </body>
+</html>

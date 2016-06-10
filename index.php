@@ -1,24 +1,22 @@
 <?php
-require_once "file.php";
-$file_name = (isset($_GET['file_name']) ? $_GET['file_name'] : '');
-$directory = 'worker';//Директория для поиска файлов
-$file = new File();
-$file->data_check($file_name, $directory);
-$file->list_html_glob();
+require_once('config.php');
+require_once('function.php');
+connect_to_base();
+$num = 10;//количество отображаемых записей на странице
+$offset = 0;//смещение
+if(isset($_GET['num_page']) && filter_var($_GET['num_page'], FILTER_VALIDATE_INT))
+{	
+	$active_link = $_GET['num_page'];
+	$offset = $_GET['num_page']*$num -$num;
+}
+
+$all_messages = mysql_num_rows(mysql_query("SELECT * FROM `messages`"));
+$num_pages = ceil($all_messages/$num);
+$query = "SELECT * FROM `messages`";
+//Сортировка
+$query .= " ORDER BY `id` DESC";
+//Лимит и смещение
+$query .= " LIMIT $offset,$num";
+$data = mysql_query($query);
+require_once('html/index.html');
 ?>
-<head>
-<link href="style.css" rel="stylesheet">
-</head>
-<body>
-<center>
-<form>
-		<h3>Поиск файлов в директории.</h3>
-		<label>Имя файла:</label><input type="text" name="file_name" value="<?php echo $file->filename ?>">
-		<br>
-		<input type="submit" value="Найти">
-</form>
-<?php
-echo $file->list_html;
-?>
-</center>
-</body>
